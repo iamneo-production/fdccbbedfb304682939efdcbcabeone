@@ -1,64 +1,66 @@
-// Initial game state
-let cells = ['', '', '', '', '', '', '', '', ''];
 let currentPlayer = 'X';
-let result = document.querySelector('.result');
-let btns = document.querySelectorAll('.btn');
-let conditions = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-];
+let isGameActive = true;
 
-// Function to handle player moves
-const ticTacToe = (element, index) => {
-    // Your game logic here
+function makeMove(button) {
+    if (isGameActive && button.value === '') {
+            button.value = currentPlayer;
+                    button.disabled = true;
+                            button.textContent = currentPlayer;
+                                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                                            updateResult();
+                                                }
+                                                }
 
-    /*
-    **Part 1: Winning Conditions (Add your code here)**
+                                                function updateResult() {
+                                                    const resultContainer = document.getElementById('result');
+                                                        const winner = checkWinner();
 
-    1. Implement the logic to check for winning conditions using the 'conditions' array.
-    2. Display a winning message in the 'result' element when a player wins.
-    3. Disable all buttons after a win.
-    */
+                                                            if (winner) {
+                                                                    resultContainer.textContent = `Player ${winner} wins!`;
+                                                                            isGameActive = false;
+                                                                                } else if ([...document.querySelectorAll('.btn')].every(button => button.value !== '')) {
+                                                                                        resultContainer.textContent = "It's a draw!";
+                                                                                                isGameActive = false;
+                                                                                                    } else {
+                                                                                                            resultContainer.textContent = `Player ${currentPlayer}'s Turn`;
+                                                                                                                }
+                                                                                                                }
 
-    // Your code to update the game state and check for a win
-    // ...
+                                                                                                                function checkWinner() {
+                                                                                                                    const winningCombinations = [
+                                                                                                                            [0, 1, 2],
+                                                                                                                                    [3, 4, 5],
+                                                                                                                                            [6, 7, 8],
+                                                                                                                                                    [0, 3, 6],
+                                                                                                                                                            [1, 4, 7],
+                                                                                                                                                                    [2, 5, 8],
+                                                                                                                                                                            [0, 4, 8],
+                                                                                                                                                                                    [2, 4, 6],
+                                                                                                                                                                                        ];
 
-    // Your code to display the current player's turn
-    // ...
+                                                                                                                                                                                            for (const combination of winningCombinations) {
+                                                                                                                                                                                                    const [a, b, c] = combination;
+                                                                                                                                                                                                            if (document.querySelector(`.btn[value="${a}"]`).value &&
+                                                                                                                                                                                                                        document.querySelector(`.btn[value="${a}"]`).value === document.querySelector(`.btn[value="${b}"]`).value &&
+                                                                                                                                                                                                                                    document.querySelector(`.btn[value="${a}"]`).value === document.querySelector(`.btn[value="${c}"]`).value) {
+                                                                                                                                                                                                                                                return document.querySelector(`.btn[value="${a}"]`).value;
+                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                            }
 
-    // Your code to handle button and cell interactions
-    // ...
-};
+                                                                                                                                                                                                                                                                return null;
+                                                                                                                                                                                                                                                                }
 
-    /*
-    **Part 2: Reset Function (Add your code here)**
+                                                                                                                                                                                                                                                                function resetGame() {
+                                                                                                                                                                                                                                                                    const buttons = document.querySelectorAll('.btn');
+                                                                                                                                                                                                                                                                        buttons.forEach(button => {
+                                                                                                                                                                                                                                                                                button.value = '';
+                                                                                                                                                                                                                                                                                        button.disabled = false;
+                                                                                                                                                                                                                                                                                                button.textContent = '';
+                                                                                                                                                                                                                                                                                                    });
+                                                                                                                                                                                                                                                                                                        currentPlayer = 'X';
+                                                                                                                                                                                                                                                                                                            isGameActive = true;
+                                                                                                                                                                                                                                                                                                                document.getElementById('result').textContent = `Player ${currentPlayer}'s Turn`;
+                                                                                                                                                                                                                                                                                                                }
 
-    1. Implement a new function that resets the game to its initial state.
-    2. Ensure the 'cells', 'btns', and 'currentPlayer' variables are reset.
-    3. Update the 'result' element to indicate the current player's turn.
-    4. Re-enable all buttons for a new game.
-    */
-
-// Function to reset the game
-const resetGame = () => {
-    // Your code to reset the game state
-    // ...
-
-    // Your code to update the 'result' element
-    // ...
-
-    // Your code to re-enable buttons
-    // ...
-};
-
-btns.forEach((btn, i) => {
-    btn.addEventListener('click', () => ticTacToe(btn, i));
-});
-
-document.querySelector('#reset').addEventListener('click', resetGame);
+                                                                                                                                                                                                                                                                                                                document.getElementById('reset-button').addEventListener('click', resetGame);
+                                                                                                                                                                                                                                                                                                                
